@@ -23,6 +23,21 @@ function Middleware() {
 }
 
 Middleware.prototype = {
+  pkg: function () {
+    return this.run.bind(this);
+  },
+  run: function () {
+    var mw, args, done;
+    mw = this;
+    args = slice(arguments);
+    if (isFunction(args[args.length-1])) {
+      done = args.pop();
+    }
+    setTimeout(function () {
+      new MiddlewareProcess(mw, done).exec(args);
+    }, 0);
+    return this;
+  },
   use: function () {
     var args = slice(arguments);
     while (args.length) {
@@ -35,18 +50,6 @@ Middleware.prototype = {
       }
       this.stack.push(args.shift());
     }
-    return this;
-  },
-  run: function () {
-    var mw, args, done;
-    mw = this;
-    args = slice(arguments);
-    if (isFunction(args[args.length-1])) {
-      done = args.pop();
-    }
-    setTimeout(function () {
-      new MiddlewareProcess(mw, done).exec(args);
-    }, 0);
     return this;
   }
 };
