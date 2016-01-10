@@ -39,31 +39,33 @@ Middleware.prototype = {
   },
   run: function () {
     var mw, args, done;
-    mw = deepClone(this);
+    mw = this;
     args = slice(arguments);
     if (isFunction(args[args.length-1])) {
       done = args.pop();
     }
     setTimeout(function () {
       new MiddlewareProcess(mw, done).exec(args);
-    }, 0)
+    }, 0);
+    return this;
   }
 };
 
 function MiddlewareProcess(mw, done) {
-  this.mw = mw;
+  this.context = mw.context;
+  this.stack = deepClone(mw.stack);
   this.done = done;
 }
 
 MiddlewareProcess.prototype = {
   exec: function (args) {
-    if (!this.mw.stack.length) {
+    if (!this.stack.length) {
       end();
     } else {
       args.push(this.next.bind(this));
       args.push(this.end.bind(this));
       try {
-        this.mw.stack.shift().apply(this.mw.context, args);
+        this.stack.shift().apply(this.context, args);
       } catch (err) {
         this.end(err);
       }
@@ -71,11 +73,11 @@ MiddlewareProcess.prototype = {
   },
   end: function () {
     if (this.done) {
-      this.done.apply(this.mw.context, slice(arguments));
+      this.done.apply(this.context, slice(arguments));
     }
   },
   next: function (err) {
-    if (err || !this.mw.stack.length) {
+    if (err || !this.stack.length) {
       this.end.apply(this, slice(arguments));
       return;
     }

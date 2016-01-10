@@ -11,9 +11,9 @@ npm install node-mw --save
 ## Usage
 
 ```javascript
-var mwFactory = require('node-mw');
+var Mw = require('node-mw');
 
-mwFactory({foo:'bar'})
+Mw({foo:'bar'})
   .use(function (a, next, end) {
     console.log('CP1', this, arguments);
     next(null, 'X');
@@ -30,7 +30,7 @@ mwFactory({foo:'bar'})
     console.log('END', this, arguments);
   });
 
-/** output **/
+// output
 // CP1 { foo: 'bar' } { '0': 'a', '1': [Function: bound ], '2': [Function: bound ] }
 // CP2 { foo: 'bar' } { '0': 'X', '1': [Function: bound ], '2': [Function: bound ] }
 // CP3 { foo: 'bar' } { '0': 'Y', '1': [Function: bound ], '2': [Function: bound ] }
