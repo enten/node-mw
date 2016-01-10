@@ -1,0 +1,23 @@
+{
+  "name": "node-mw",
+  "version": "0.0.1",
+  "description": "Middleware factory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steven Enten <steven@enten.fr>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/enten/node-mw.git"
+  },
+  "keywords": [
+    "middleware",
+    "factory"
+  ],
+  "bugs": {
+    "url": "https://github.com/enten/node-mw/issues"
+  },
+  "homepage": "https://github.com/enten/node-mw#readme"
+}
